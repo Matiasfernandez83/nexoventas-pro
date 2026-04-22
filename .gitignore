@@ -1,0 +1,22 @@
+# Entorno virtual Python
+venv/
+env/
+.env
+__pycache__/
+*.pyc
+*.pyo
+
+# Base de datos local (Render usa su propio disco)
+database.db
+
+# Uploads locales
+static/uploads/*
+!static/uploads/.gitkeep
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

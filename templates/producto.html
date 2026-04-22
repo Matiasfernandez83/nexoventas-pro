@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ producto.titulo }} - NexoVentas{% endblock %}
+{% block meta_description %}{{ producto.descripcion[:150] }}...{% endblock %}
+
+{% block content %}
+<div class="breadcrumb text-sm mb-lg">
+    <a href="{{ url_for('index') }}" class="text-muted">← Volver a la Tienda</a>
+</div>
+
+<article class="producto-detalle-grid">
+    <!-- Imagen del producto -->
+    <div class="producto-visual">
+        <div class="imagen-wrapper-grande">
+            <img src="{{ producto.imagen_url }}" alt="{{ producto.titulo }}">
+        </div>
+    </div>
+    
+    <!-- Info del producto -->
+    <div class="producto-info">
+        <div class="badge-categoria">{{ producto.categoria }}</div>
+        <h1 class="titulo-gigante">{{ producto.titulo }}</h1>
+        
+        <div class="estrellas mb-md">
+            {% for _ in range(producto.estrellas) %}★{% endfor %}
+            <span class="text-sm text-muted ml-sm">Valoración Excelente</span>
+        </div>
+        
+        <p class="precio-gigante text-accent">{{ producto.precio|formato_precio }}</p>
+        
+        <div class="descripcion-narrativa mb-lg">
+            <p>{{ producto.descripcion }}</p>
+        </div>
+        
+        <!-- CTA Principal -->
+        <a href="{{ producto.enlace_afiliado }}" target="_blank" rel="noopener noreferrer" class="btn-cta-gigante mb-lg pulse-anim">
+            Comprar Ahora en Mercado Libre
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-sm"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+
+        <!-- Social Proof / Foro -->
+        <div class="foro-section">
+            <h3 class="mb-md d-flex align-center">
+                <svg width="20" height="20" class="mr-sm text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                Preguntas Frecuentes
+            </h3>
+            
+            <div class="chat-burbujas">
+                {% for item in foro %}
+                <div class="hilo-chat mb-md">
+                    <div class="burbuja pregunta">
+                        <strong>Usuario:</strong> {{ item.pregunta }}
+                    </div>
+                    <div class="burbuja respuesta">
+                        <strong>Experto:</strong> {{ item.respuesta }}
+                    </div>
+                </div>
+                {% else %}
+                    <p class="text-muted">Aún no hay preguntas sobre este producto.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</article>
+{% endblock %}

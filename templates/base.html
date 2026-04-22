@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}NexoVentas Pro{% endblock %}</title>
+  <meta name="description" content="NexoVentas Pro — Las mejores ofertas de tecnología y hogar con precios reales de Mercado Libre.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container hdr-inner">
+      <a href="/" class="logo">
+        NEXO<span class="logo-accent">VENTAS</span>
+        <span class="logo-v2">PRO</span>
+      </a>
+      <nav class="hdr-nav">
+        <a href="/" class="nav-link">Inicio</a>
+        <a href="/admin" class="nav-link nav-admin">⚙ Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-brand">NEXO<span class="logo-accent">VENTAS</span> PRO</p>
+      <p class="footer-copy">© 2026 · Tienda de afiliados Mercado Libre · Todos los precios son orientativos.</p>
+    </div>
+  </footer>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+{% block title %}NexoVentas Pro — Ofertas Premium{% endblock %}
+
+{% block content %}
+
+{# ── Flash messages ── #}
+{% with msgs = get_flashed_messages(with_categories=true) %}
+  {% if msgs %}
+    <div class="flash-zone container">
+      {% for cat, msg in msgs %}
+        <div class="flash {{ cat }}">{{ msg }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+{# ═══════════════════════════════════════════════
+   SECCIÓN CARRUSEL — Primeros 5 productos
+   ═══════════════════════════════════════════════ #}
+<section class="hero-section">
+  <div class="container">
+
+    {% if productos %}
+    {# Tomamos los primeros 5 como destacados #}
+    {% set destacados = productos[:5] %}
+
+    <div class="carousel-wrap" id="mainCarousel">
+      <div class="carousel-track" id="carouselTrack">
+        {% for p in destacados %}
+        <div class="carousel-slide {% if loop.first %}active{% endif %}">
+          <div class="slide-bg-img" style="background-image: url('{{ p.imagen_url }}');"></div>
+
+          <div class="slide-body">
+            <div class="slide-badge">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+              OFERTA DESTACADA
+            </div>
+
+            <h2 class="slide-title">{{ p.titulo }}</h2>
+            <p class="slide-desc">{{ p.descripcion }}</p>
+
+            <div class="slide-price-row">
+              <span class="slide-price">{{ p.precio|precio_fmt }}</span>
+              <a href="{{ p.link_afiliado }}" class="btn-cta" target="_blank" rel="noopener">
+                Ver Oferta →
+              </a>
+            </div>
+          </div>
+
+          <div class="slide-img-wrap">
+            <img src="{{ p.imagen_url }}" alt="{{ p.titulo }}" loading="lazy">
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% if destacados|length > 1 %}
+      <button class="carousel-btn prev" id="cPrev">&#10094;</button>
+      <button class="carousel-btn next" id="cNext">&#10095;</button>
+      <div class="carousel-dots" id="cDots">
+        {% for p in destacados %}
+        <span class="carousel-dot {% if loop.first %}active{% endif %}" data-idx="{{ loop.index0 }}"></span>
+        {% endfor %}
+      </div>
+      <div class="carousel-counter">
+        <span id="cCurrent">1</span> / {{ destacados|length }}
+      </div>
+      {% endif %}
+    </div>
+
+    {% else %}
+    {# Estado vacío elegante #}
+    <div class="carousel-empty">
+      <div class="empty-state">
+        <div class="empty-icon">🛍️</div>
+        <p class="empty-title">Próximamente más ofertas</p>
+        <p class="empty-sub">Nuestro equipo está cargando nuevos productos. ¡Volvé pronto!</p>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{# ═══════════════════════════════════════════════
+   CATÁLOGO COMPLETO
+   ═══════════════════════════════════════════════ #}
+<section class="content-section">
+  <div class="container">
+
+    <div class="section-head">
+      <h2 class="section-title">Catálogo <span>Completo</span></h2>
+    </div>
+
+    {# Filtros de categoría #}
+    {% if categorias %}
+    <div class="filters-wrap" id="catFilters">
+      <button class="filter-btn active" data-cat="all">Todos</button>
+      {% for cat in categorias %}
+      <button class="filter-btn" data-cat="{{ cat|lower|replace(' ', '-') }}">{{ cat }}</button>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {# Grid de productos #}
+    <div class="products-grid" id="productsGrid">
+
+      {% if productos %}
+        {% for p in productos %}
+        <article class="product-card" data-cat="{{ p.categoria|lower|replace(' ', '-') }}">
+          <div class="card-img-wrap">
+            <img src="{{ p.imagen_url }}" alt="{{ p.titulo }}" loading="lazy">
+          </div>
+
+          <div class="card-body">
+            <span class="card-cat">{{ p.categoria }}</span>
+            <h3 class="card-title">{{ p.titulo }}</h3>
+
+            {# ★ Estrellas #}
+            <div class="card-stars">
+              <span class="stars">
+                {% for i in range(5) %}
+                  {% if i < p.estrellas %}★{% else %}☆{% endif %}
+                {% endfor %}
+              </span>
+              <span class="stars-count">({{ p.estrellas }}.0)</span>
+            </div>
+
+            {# 💰 Precio — elemento más visible #}
+            <div class="card-price-block">
+              <div class="card-price-prev">
+                {{ (p.precio * 1.12)|round|int|precio_fmt }}
+              </div>
+              <div class="card-price">{{ p.precio|precio_fmt }}</div>
+              <div class="card-price-note">✓ Envío Full disponible</div>
+            </div>
+
+            {# CTA ancho #}
+            <a href="{{ p.link_afiliado }}" class="card-cta" target="_blank" rel="noopener">
+              Ver Oferta en Mercado Libre
+            </a>
+          </div>
+        </article>
+        {% endfor %}
+
+      {% else %}
+        <div class="grid-empty">
+          <div class="empty-icon">📦</div>
+          <p class="empty-title">Próximamente más ofertas</p>
+          <p class="empty-sub">Estamos preparando los mejores productos para vos.</p>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ── CARRUSEL ──────────────────────────────── */
+  const track  = document.getElementById('carouselTrack');
+  const slides = track ? track.querySelectorAll('.carousel-slide') : [];
+  const dots   = document.querySelectorAll('.carousel-dot');
+  const counter = document.getElementById('cCurrent');
+  let cur = 0, timer;
+
+  function goTo(n) {
+    cur = (n + slides.length) % slides.length;
+    track.style.transform = `translateX(-${cur * 100}%)`;
+    slides.forEach((s, i) => s.classList.toggle('active', i === cur));
+    dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+    if (counter) counter.textContent = cur + 1;
+  }
+
+  function next() { goTo(cur + 1); }
+
+  if (slides.length > 1) {
+    document.getElementById('cPrev')?.addEventListener('click', () => { goTo(cur - 1); restart(); });
+    document.getElementById('cNext')?.addEventListener('click', () => { next(); restart(); });
+    dots.forEach(d => d.addEventListener('click', () => { goTo(+d.dataset.idx); restart(); }));
+
+    const wrap = document.getElementById('mainCarousel');
+    wrap?.addEventListener('mouseenter', () => clearInterval(timer));
+    wrap?.addEventListener('mouseleave', restart);
+
+    function restart() { clearInterval(timer); timer = setInterval(next, 5500); }
+    restart();
+  }
+
+  /* ── FILTROS ────────────────────────────────── */
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards      = document.querySelectorAll('.product-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cat = btn.dataset.cat;
+      cards.forEach(card => {
+        const show = cat === 'all' || card.dataset.cat === cat;
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.96)';
+        setTimeout(() => {
+          card.style.display = show ? 'flex' : 'none';
+          if (show) requestAnimationFrame(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'scale(1)';
+          });
+        }, 200);
+      });
+    });
+  });
+
+  /* Transición suave en tarjetas */
+  cards.forEach(c => { c.style.transition = 'opacity 0.25s, transform 0.25s'; });
+});
+</script>
+{% endblock %}
