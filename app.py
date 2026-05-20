@@ -53,40 +53,7 @@ def ensure_db():
         )
     ''')
     conn.commit()
-    # Si la tabla está vacía, insertar productos de ejemplo
-    count = conn.execute('SELECT COUNT(*) FROM productos').fetchone()[0]
-    if count == 0:
-        seed = [
-            ("Samsung Galaxy S24 Ultra 5G",
-             "Titan de la fotografia. S-Pen integrado, camara 200MP y pantalla Dynamic AMOLED 2X.",
-             1999999, "https://images.unsplash.com/photo-1678911820864-e2c567c655d7?q=80&w=800&auto=format&fit=crop",
-             "https://www.mercadolibre.com.ar/p/MLA21444143", "Smartphones", 5),
-            ("iPhone 15 Pro Max 256 GB",
-             "Titanio, camara triple con zoom 5x y chip A17 Pro. En stock ahora.",
-             2450000, "https://images.unsplash.com/photo-1696446701796-da61225697cc?q=80&w=800&auto=format&fit=crop",
-             "https://www.mercadolibre.com.ar/p/MLA27341852", "Smartphones", 5),
-            ("Sony WH-1000XM5 Noise Cancelling",
-             "Cancelacion de ruido lider en la industria. Autonomia de 30 horas.",
-             520000, "https://images.unsplash.com/photo-1546435770-a3e426da4717?q=80&w=800&auto=format&fit=crop",
-             "https://www.mercadolibre.com.ar/p/MLA15949444", "Audio", 5),
-            ("Smart TV LG 55 OLED evo",
-             "Negros perfectos, colores infinitos. Procesador con IA y Dolby Vision IQ.",
-             1850000, "https://images.unsplash.com/photo-1593359677759-5437334eb91b?q=80&w=800&auto=format&fit=crop",
-             "https://www.mercadolibre.com.ar/p/MLA22262261", "TV & Video", 5),
-            ("Notebook Lenovo IdeaPad Slim 5",
-             "Intel Core i5 13th Gen, 16 GB RAM, SSD 512 GB. Lista para el trabajo.",
-             780000, "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=800&auto=format&fit=crop",
-             "https://www.mercadolibre.com.ar/p/MLA22262265", "Computacion", 4),
-            ("Freidora de Aire Philips XXL",
-             "7.3 litros de capacidad con hasta 90% menos grasa.",
-             195000, "https://images.unsplash.com/photo-1585504706975-5137d7f6fe95?q=80&w=800&auto=format&fit=crop",
-             "https://www.mercadolibre.com.ar/p/MLA15116744", "Hogar", 5),
-        ]
-        conn.executemany(
-            'INSERT INTO productos (titulo,descripcion,precio,imagen_url,link_afiliado,categoria,estrellas) '
-            'VALUES (?,?,?,?,?,?,?)', seed
-        )
-        conn.commit()
+    # Si la tabla está vacía, no insertar productos de ejemplo (eliminado a petición)
     conn.close()
 
 # Auto-inicializar al arrancar
