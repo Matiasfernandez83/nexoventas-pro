@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Ingresar — NexoVentas Pro{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width:420px; padding:80px 20px 120px;">
+
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% if msgs %}
+      {% for cat, msg in msgs %}
+        <div class="flash {{ cat }}" style="margin-bottom:16px;">{{ msg }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <div class="admin-card" style="text-align:center;">
+    <div style="font-size:2.2rem; margin-bottom:8px;">🔐</div>
+    <h1 class="admin-title" style="font-size:1.4rem; margin-bottom:4px;">
+      Panel <span>Admin</span>
+    </h1>
+    <p style="color:var(--text-3, #888); font-size:0.85rem; margin-bottom:24px;">
+      Ingresá tus credenciales para administrar la tienda.
+    </p>
+
+    <form action="{{ url_for('admin_login', next=request.args.get('next')) }}" method="POST" style="text-align:left;">
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="f-user">Usuario</label>
+        <input id="f-user" name="usuario" type="text" class="form-input"
+               autocomplete="username" required autofocus>
+      </div>
+      <div class="form-group" style="margin-bottom:22px;">
+        <label class="form-label" for="f-pass">Contraseña</label>
+        <input id="f-pass" name="password" type="password" class="form-input"
+               autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn-submit" style="width:100%;">Ingresar</button>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

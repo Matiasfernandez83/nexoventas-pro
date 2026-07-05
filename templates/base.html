@@ -21,7 +21,10 @@
       </a>
       <nav class="hdr-nav">
         <a href="/" class="nav-link">Inicio</a>
+        {% if session.get('admin_logged') %}
         <a href="/admin" class="nav-link nav-admin">⚙ Admin</a>
+        <a href="/admin/logout" class="nav-link">Salir</a>
+        {% endif %}
       </nav>
     </div>
   </header>

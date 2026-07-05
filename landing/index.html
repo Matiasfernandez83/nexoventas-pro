@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexoVentas Pro - Tu Tienda de Afiliados Premium</title>
+    <meta name="description" content="Tu propia tienda de afiliados de Mercado Libre en 24 horas. Sin saber programar, con panel de carga manual anti-baneos.">
+    <meta property="og:title" content="NexoVentas Pro - Tu Tienda de Afiliados Premium">
+    <meta property="og:description" content="Tu propia tienda de afiliados de Mercado Libre en 24 horas. Sin saber programar.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #080808;
+            --text-main: #f5f5f5;
+            --text-muted: #a0a0a0;
+            --cyan: #00e5ff;
+            --cyan-glow: rgba(0, 229, 255, 0.4);
+            --card-bg: #111111;
+            --card-border: #222222;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body {
+            background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 229, 255, 0.10), transparent),
+                        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(0, 229, 255, 0.05), transparent),
+                        var(--bg-color);
+            color: var(--text-main); line-height: 1.4; overflow-x: hidden; scroll-behavior: smooth;
+        }
+        .container { width: 95%; max-width: 1200px; margin: 0 auto; }
+        .text-cyan { color: var(--cyan); text-shadow: 0 0 8px var(--cyan-glow); }
+        .section-title { text-align: center; font-size: 1.6rem; margin-bottom: 25px; }
+
+        .btn { display: inline-block; background: transparent; color: var(--cyan); border: 1px solid var(--cyan); padding: 10px 25px; font-size: 0.95rem; font-weight: 600; border-radius: 5px; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; }
+        .btn:hover { background: var(--cyan); color: var(--bg-color); box-shadow: 0 0 15px var(--cyan-glow); }
+        .btn-filled { background: var(--cyan); color: var(--bg-color); }
+        .btn-filled:hover { background: transparent; color: var(--cyan); border-color: var(--cyan); }
+
+        nav { padding: 15px 0; position: absolute; width: 100%; top: 0; z-index: 100; }
+        .logo { font-size: 1.2rem; font-weight: 800; }
+        .lang-selector { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--card-border); padding: 5px 10px; border-radius: 5px; outline: none; font-family: 'Inter', sans-serif; cursor: pointer; transition: border-color 0.3s; }
+        .lang-selector:hover { border-color: var(--cyan); }
+
+        /* Hero */
+        .hero { 
+            padding: 120px 0 60px; 
+            display: flex; align-items: center; justify-content: center; text-align: center; position: relative; 
+            background: transparent;
+        }
+        .hero-content { z-index: 10; max-width: 800px; }
+        .hero h1 { font-size: 2.2rem; font-weight: 800; line-height: 1.1; margin-bottom: 10px; }
+        .hero p { font-size: 1rem; color: var(--text-muted); margin-bottom: 20px; font-weight: 300; }
+        .hero-buttons { display: flex; gap: 15px; justify-content: center; }
+
+        /* Instructions */
+        .instructions { padding: 40px 0; background: transparent; }
+        .instructions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+        .instructions-left { display: flex; flex-direction: column; gap: 20px; }
+        .instruction-step { background: var(--card-bg); border: 1px solid var(--card-border); padding: 15px 20px; border-radius: 8px; border-left: 4px solid var(--cyan); transition: transform 0.3s; }
+        .instruction-step:hover { transform: translateX(5px); border-color: #333; }
+        .instruction-step h4 { font-size: 1.1rem; margin-bottom: 5px; color: var(--text-main); }
+        .instruction-step p { font-size: 0.9rem; color: var(--text-muted); }
+        .instructions-right { background: #151515; border: 1px dashed var(--card-border); border-radius: 12px; height: 300px; display: flex; align-items: center; justify-content: center; color: var(--cyan); font-weight: 600; text-align: center; padding: 20px; transition: border-color 0.3s; }
+        .instructions-right:hover { border-color: var(--cyan); box-shadow: 0 0 15px rgba(0, 229, 255, 0.1); }
+
+        /* Benefits */
+        .benefits { padding: 30px 0; background: transparent; }
+        .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .benefit-card { background: var(--card-bg); border: 1px solid var(--card-border); padding: 15px; border-radius: 8px; text-align: center; transition: transform 0.3s ease; }
+        .benefit-card:hover { transform: translateY(-5px); border-color: #333; }
+        .benefit-icon { font-size: 1.5rem; color: var(--cyan); margin-bottom: 10px; }
+        .benefit-card h3 { font-size: 1.1rem; margin-bottom: 5px; }
+        .benefit-card p { color: var(--text-muted); font-size: 0.85rem; }
+
+        /* Testimonials */
+        .testimonials { padding: 30px 0; background: rgba(10, 10, 10, 0.4); border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border); }
+        .reviews-container { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; }
+        .reviews-container::-webkit-scrollbar { height: 6px; }
+        .reviews-container::-webkit-scrollbar-thumb { background-color: var(--cyan); border-radius: 10px; }
+        .review-card { min-width: 260px; background: var(--card-bg); border: 1px solid #1a1a1a; border-radius: 8px; padding: 15px; flex-shrink: 0; }
+        .stars { color: #ffc107; margin-bottom: 5px; font-size: 1rem; letter-spacing: 2px; }
+        .review-text { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px; font-style: italic; }
+        .review-author { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
+
+        /* Pricing */
+        .pricing { padding: 30px 0 40px; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 700px; margin: 0 auto; }
+        .price-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 25px 20px; display: flex; flex-direction: column; position: relative; }
+        .price-card.featured { border-color: var(--cyan); }
+        .price-card.featured::after { content: 'RECOMENDADO'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--cyan); color: var(--bg-color); padding: 3px 10px; border-radius: 15px; font-size: 0.7rem; font-weight: 800; }
+        .price-title { font-size: 1.2rem; margin-bottom: 5px; }
+        .price-amount { font-size: 2rem; font-weight: 800; margin-bottom: 15px; color: var(--cyan); }
+        .price-amount span { font-size: 0.8rem; color: var(--text-muted); font-weight: 400; }
+        .price-features { list-style: none; margin-bottom: 20px; flex-grow: 1; }
+        .price-features li { margin-bottom: 8px; color: var(--text-muted); font-size: 0.85rem; display: flex; align-items: center; }
+        .price-features li::before { content: '✓'; color: var(--cyan); margin-right: 8px; font-weight: bold; }
+        .price-card .btn { width: 100%; text-align: center; padding: 10px; font-size: 0.9rem; }
+
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: var(--card-bg); border: 1px solid var(--cyan); border-radius: 12px; padding: 30px; width: 90%; max-width: 400px; position: relative; box-shadow: 0 0 20px rgba(0, 229, 255, 0.15); animation: modalFadeIn 0.3s ease; }
+        @keyframes modalFadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; background: none; border: none; transition: color 0.3s; }
+        .modal-close:hover { color: var(--cyan); }
+        .modal-title { font-size: 1.4rem; margin-bottom: 20px; text-align: center; font-weight: 600; color: var(--cyan); }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 6px; font-size: 0.85rem; color: var(--text-muted); }
+        .form-group input, .form-group select { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--card-border); background: #151515; color: var(--text-main); font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.3s; }
+        .form-group input:focus, .form-group select:focus { border-color: var(--cyan); }
+        
+        .form-message { display: none; margin-top: 15px; text-align: center; color: #4ade80; font-size: 0.95rem; background: rgba(74, 222, 128, 0.1); border: 1px solid #4ade80; padding: 10px; border-radius: 6px; }
+
+        /* Footer */
+        footer { background: rgba(5, 5, 5, 0.7); padding: 15px 0; text-align: center; border-top: 1px solid var(--card-border); }
+        footer p { color: var(--text-muted); font-size: 0.8rem; }
+
+        /* Botón flotante de WhatsApp */
+        .wa-float {
+            position: fixed; bottom: 22px; right: 22px; z-index: 900;
+            width: 56px; height: 56px; border-radius: 50%;
+            background: #25D366; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.45); transition: transform 0.2s ease;
+        }
+        .wa-float:hover { transform: scale(1.1); }
+        .wa-float svg { width: 30px; height: 30px; fill: #fff; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            .hero p { font-size: 0.9rem; }
+            .hero-buttons { flex-direction: column; gap: 10px; align-items: center; }
+            .hero-buttons .btn { width: 100%; max-width: 250px; text-align: center; }
+            .instructions-grid { grid-template-columns: 1fr; }
+            .instructions-right { height: 200px; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .reviews-container { padding-bottom: 5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="logo" data-i18n="nav_logo">NexoVentas<span class="text-cyan">Pro</span></div>
+            <select id="langSelector" class="lang-selector" onchange="changeLanguage(this.value)">
+                <option value="es">Español</option>
+                <option value="en">English</option>
+                <option value="pt">Português</option>
+            </select>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container hero-content">
+            <h1 data-i18n="hero_title">Tu propia Tienda de Afiliados <span class="text-cyan">Premium</span> en 24 Horas</h1>
+            <p data-i18n="hero_subtitle">Sin saber programar y con carga manual anti-baneos.</p>
+            <div class="hero-buttons">
+                <a href="#precios" class="btn btn-filled" data-i18n="btn_planes">Ver Planes</a>
+                <a href="https://nexoventas-pro.onrender.com/" target="_blank" class="btn demo-link" data-i18n="btn_demo">Ver Demo en Vivo</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Instructions Section -->
+    <section class="instructions" id="como-funciona">
+        <div class="container">
+            <h2 class="section-title" data-i18n="como_funciona_title">Cómo usar <span class="text-cyan">NexoVentas Pro</span></h2>
+            <div class="instructions-grid">
+                <div class="instructions-left">
+                    <div class="instruction-step">
+                        <h4 data-i18n="step1_title">1. Descarga e Instala</h4>
+                        <p data-i18n="step1_desc">Recibe los archivos de la tienda y súbelos a tu hosting en pocos minutos.</p>
+                    </div>
+                    <div class="instruction-step">
+                        <h4 data-i18n="step2_title">2. Carga tus Productos</h4>
+                        <p data-i18n="step2_desc">Agrega tus enlaces de afiliado manualmente desde el panel para evitar baneos de plataformas.</p>
+                    </div>
+                    <div class="instruction-step">
+                        <h4 data-i18n="step3_title">3. Empieza a Vender</h4>
+                        <p data-i18n="step3_desc">Comparte tu tienda, mejora tu SEO y recibe comisiones directamente en tu cuenta.</p>
+                    </div>
+                </div>
+                <div class="instructions-right" style="flex-direction: column; gap: 10px;">
+                    <!-- PARA PONER UNA IMAGEN: Guarda tu imagen como "manual.jpg" en la misma carpeta que esta página -->
+                    <img src="manual.jpg" alt="Panel de Control" style="max-width: 100%; border-radius: 8px; box-shadow: 0 0 15px rgba(0,229,255,0.2);" onerror="this.onerror=null; this.src='https://placehold.co/600x300/111111/00e5ff?text=Panel+de+Control+NexoVentas'">
+                    
+                    <!-- PARA PONER UN VIDEO: Borra la imagen de arriba y quita los comentarios de este código
+                    <video width="100%" controls autoplay muted loop style="border-radius: 8px; box-shadow: 0 0 15px rgba(0,229,255,0.2);">
+                        <source src="tu_video.mp4" type="video/mp4">
+                    </video>
+                    -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="benefits" id="beneficios">
+        <div class="container">
+            <h2 class="section-title" data-i18n="benefits_title">¿Por qué <span class="text-cyan">NexoVentas Pro</span>?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">✨</div>
+                    <h3 data-i18n="b1_title">Diseño Premium</h3>
+                    <p data-i18n="b1_desc">Experiencia de usuario optimizada para maximizar conversiones.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🛡️</div>
+                    <h3 data-i18n="b2_title">Gestión Manual</h3>
+                    <p data-i18n="b2_desc">Arquitectura anti-baneos. Control total de enlaces.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">⚡</div>
+                    <h3 data-i18n="b3_title">Velocidad Extrema</h3>
+                    <p data-i18n="b3_desc">Tiempos de carga rápidos que mejoran el posicionamiento SEO.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title" data-i18n="test_title">Lo que dicen <span class="text-cyan">nuestros clientes</span></h2>
+            <div class="reviews-container">
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="review-text">"Me habían bloqueado dos cuentas antes. Con la carga manual de NexoVentas no tuve ni un solo problema y el control es total."</p>
+                    <p class="review-author">- Carlos R. (Emprendedor)</p>
+                </div>
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="review-text">"No sé absolutamente nada de código. Pude levantar mi tienda en 24 horas exactas y ya estoy generando comisiones. ¡Increíble!"</p>
+                    <p class="review-author">- Mariana T. (Marketing Digital)</p>
+                </div>
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="review-text">"El diseño oscuro y premium le da tanta autoridad a los productos que las visitas convierten el doble que en mi web anterior."</p>
+                    <p class="review-author">- Diego F. (Afiliado Experto)</p>
+                </div>
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="review-text">"La velocidad de carga es brutal. Mis productos ahora posicionan mejor en Google y retengo casi al 100% de mi tráfico."</p>
+                    <p class="review-author">- Laura G. (Agencia SEO)</p>
+                </div>
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="review-text">"Pagué el plan de Código Propio y fue la mejor inversión. Ser dueño de la infraestructura completa me da mucha tranquilidad."</p>
+                    <p class="review-author">- Martín S. (Desarrollador Web)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="precios">
+        <div class="container">
+            <h2 class="section-title" data-i18n="price_title">Planes y <span class="text-cyan">Precios</span></h2>
+            <div class="pricing-grid">
+                <div class="price-card">
+                    <h3 class="price-title" data-i18n="p1_title">Suscripción Mensual</h3>
+                    <div class="price-amount" data-i18n="p1_price">$20.000 <span>ARS/mes</span></div>
+                    <ul class="price-features">
+                        <li>Hosting de alta velocidad</li>
+                        <li>Actualizaciones de seguridad</li>
+                        <li>Panel de gestión manual</li>
+                    </ul>
+                    <button class="btn" onclick="openModal()" data-i18n="btn_contratar">Contratar</button>
+                </div>
+                <div class="price-card featured">
+                    <h3 class="price-title" data-i18n="p2_title">Código Propio</h3>
+                    <div class="price-amount" data-i18n="p2_price">$200.000 <span>ARS único</span></div>
+                    <ul class="price-features">
+                        <li>Control absoluto del código</li>
+                        <li>Sin pagos mensuales (de por vida)</li>
+                        <li>Soporte técnico prioritario</li>
+                    </ul>
+                    <button class="btn btn-filled" onclick="openModal()" data-i18n="btn_contratar">Contratar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p data-i18n="footer">&copy; 2026 NexoVentas Pro. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Modal de Contratación -->
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h3 class="modal-title" data-i18n="modal_title">Completa tus datos</h3>
+            <form id="checkoutForm">
+                <div class="form-group">
+                    <label for="nombre" data-i18n="label_nombre">Nombre Completo *</label>
+                    <input type="text" id="nombre" required placeholder="Ej: Juan Pérez">
+                </div>
+                <div class="form-group">
+                    <label for="email" data-i18n="label_email">Email *</label>
+                    <input type="email" id="email" required placeholder="tu@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="telefono" data-i18n="label_tel">Teléfono (con código de área) *</label>
+                    <input type="tel" id="telefono" required placeholder="+54 9 11 1234 5678">
+                </div>
+                <div class="form-group">
+                    <label for="pais" data-i18n="label_pais">País *</label>
+                    <select id="pais" required>
+                        <option value="">Selecciona tu país...</option>
+                        <option value="Argentina">Argentina</option>
+                        <option value="Mexico">México</option>
+                        <option value="Colombia">Colombia</option>
+                        <option value="Chile">Chile</option>
+                        <option value="España">España</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-filled" style="width: 100%; margin-top: 10px;" data-i18n="btn_pagar">Confirmar y proceder al pago</button>
+                <div class="form-message" id="successMessage"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Botón flotante de WhatsApp -->
+    <a href="#" class="wa-float" id="waFloat" target="_blank" rel="noopener" title="Consultanos por WhatsApp">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 3.2c-7.06 0-12.8 5.74-12.8 12.8 0 2.257.59 4.462 1.712 6.406L3.2 28.8l6.56-1.683a12.74 12.74 0 0 0 6.24 1.59h.005c7.058 0 12.795-5.74 12.795-12.8 0-3.42-1.33-6.634-3.748-9.05a12.72 12.72 0 0 0-9.048-3.657zm0 23.36h-.004a10.6 10.6 0 0 1-5.4-1.478l-.388-.23-3.893.999 1.04-3.795-.253-.39a10.58 10.58 0 0 1-1.622-5.666c0-5.867 4.775-10.64 10.645-10.64a10.57 10.57 0 0 1 7.52 3.117 10.57 10.57 0 0 1 3.115 7.528c-.003 5.867-4.777 10.555-10.76 10.555zm5.837-7.943c-.32-.16-1.888-.932-2.18-1.038-.293-.107-.506-.16-.72.16-.213.32-.826 1.038-1.012 1.251-.187.214-.373.24-.693.08-.32-.16-1.35-.497-2.571-1.586-.95-.847-1.592-1.894-1.779-2.214-.186-.32-.02-.493.14-.652.144-.144.32-.374.48-.56.16-.187.213-.32.32-.534.107-.213.054-.4-.026-.56-.08-.16-.72-1.734-.986-2.374-.26-.624-.523-.54-.72-.55l-.613-.01c-.213 0-.56.08-.853.4-.293.32-1.12 1.094-1.12 2.667 0 1.574 1.147 3.094 1.307 3.307.16.214 2.256 3.444 5.467 4.83.764.33 1.36.527 1.825.674.767.244 1.465.21 2.017.127.615-.092 1.888-.772 2.154-1.517.267-.746.267-1.385.187-1.518-.08-.134-.293-.214-.613-.374z"/></svg>
+    </a>
+
+    <!-- Script Multi-Idioma y Modal -->
+    <script>
+        /* ══════════════════════════════════════════════════════
+           CONFIGURACIÓN — editar solo estas 2 líneas
+           WHATSAPP: tu número sin "+" (ej: 5491133334444)
+           DEMO_URL: URL de tu tienda demo desplegada en Render
+           ══════════════════════════════════════════════════════ */
+        const CONFIG = {
+            WHATSAPP: "5491100000000",
+            DEMO_URL: "https://nexoventas-pro.onrender.com/"
+        };
+
+        const translations = {
+            es: {
+                nav_logo: "NexoVentas<span class=\"text-cyan\">Pro</span>",
+                hero_title: "Tu propia Tienda de Afiliados <span class=\"text-cyan\">Premium</span> en 24 Horas",
+                hero_subtitle: "Sin saber programar y con carga manual anti-baneos.",
+                btn_planes: "Ver Planes",
+                btn_demo: "Ver Demo en Vivo",
+                como_funciona_title: "Cómo usar <span class=\"text-cyan\">NexoVentas Pro</span>",
+                step1_title: "1. Descarga e Instala",
+                step1_desc: "Recibe los archivos de la tienda y súbelos a tu hosting en pocos minutos.",
+                step2_title: "2. Carga tus Productos",
+                step2_desc: "Agrega tus enlaces de afiliado manualmente desde el panel para evitar baneos de plataformas.",
+                step3_title: "3. Empieza a Vender",
+                step3_desc: "Comparte tu tienda, mejora tu SEO y recibe comisiones directamente en tu cuenta.",
+                placeholder_image: "[ Imagen o Video del Panel de Control ]",
+                benefits_title: "¿Por qué <span class=\"text-cyan\">NexoVentas Pro</span>?",
+                b1_title: "Diseño Premium",
+                b1_desc: "Experiencia de usuario optimizada para maximizar conversiones.",
+                b2_title: "Gestión Manual",
+                b2_desc: "Arquitectura anti-baneos. Control total de enlaces.",
+                b3_title: "Velocidad Extrema",
+                b3_desc: "Tiempos de carga rápidos que mejoran el posicionamiento SEO.",
+                test_title: "Lo que dicen <span class=\"text-cyan\">nuestros clientes</span>",
+                price_title: "Planes y <span class=\"text-cyan\">Precios</span>",
+                p1_title: "Suscripción Mensual",
+                p1_price: "$20.000 <span>ARS/mes</span>",
+                p2_title: "Código Propio",
+                p2_price: "$200.000 <span>ARS único</span>",
+                btn_contratar: "Contratar",
+                footer: "&copy; 2026 NexoVentas Pro. Todos los derechos reservados.",
+                modal_title: "Completa tus datos",
+                label_nombre: "Nombre Completo *",
+                label_email: "Email *",
+                label_tel: "Teléfono (con código de área) *",
+                label_pais: "País *",
+                btn_pagar: "Confirmar y proceder al pago"
+            },
+            en: {
+                nav_logo: "NexoVentas<span class=\"text-cyan\">Pro</span>",
+                hero_title: "Your own <span class=\"text-cyan\">Premium</span> Affiliate Store in 24 Hours",
+                hero_subtitle: "No coding required, manual loading to prevent platform bans.",
+                btn_planes: "View Plans",
+                btn_demo: "Live Demo",
+                como_funciona_title: "How to use <span class=\"text-cyan\">NexoVentas Pro</span>",
+                step1_title: "1. Download & Install",
+                step1_desc: "Receive the store files and upload them to your hosting in minutes.",
+                step2_title: "2. Load your Products",
+                step2_desc: "Add your affiliate links manually from the dashboard to avoid bans.",
+                step3_title: "3. Start Selling",
+                step3_desc: "Share your store, improve SEO, and receive commissions directly.",
+                placeholder_image: "[ Control Panel Image or Video ]",
+                benefits_title: "Why <span class=\"text-cyan\">NexoVentas Pro</span>?",
+                b1_title: "Premium Design",
+                b1_desc: "Optimized user experience to maximize conversions.",
+                b2_title: "Manual Management",
+                b2_desc: "Anti-ban architecture. Total control over your links.",
+                b3_title: "Extreme Speed",
+                b3_desc: "Fast load times that improve your SEO ranking.",
+                test_title: "What <span class=\"text-cyan\">our clients</span> say",
+                price_title: "Plans & <span class=\"text-cyan\">Pricing</span>",
+                p1_title: "Monthly Subscription",
+                p1_price: "$20 USD <span>/month</span>",
+                p2_title: "Own Code",
+                p2_price: "$200 USD <span>one-time</span>",
+                btn_contratar: "Get Started",
+                footer: "&copy; 2026 NexoVentas Pro. All rights reserved.",
+                modal_title: "Enter your details",
+                label_nombre: "Full Name *",
+                label_email: "Email *",
+                label_tel: "Phone (with area code) *",
+                label_pais: "Country *",
+                btn_pagar: "Confirm and proceed to payment"
+            },
+            pt: {
+                nav_logo: "NexoVentas<span class=\"text-cyan\">Pro</span>",
+                hero_title: "Sua própria Loja de Afiliados <span class=\"text-cyan\">Premium</span> em 24 Horas",
+                hero_subtitle: "Sem saber programar e com carga manual anti-banimentos.",
+                btn_planes: "Ver Planos",
+                btn_demo: "Ver Demo ao Vivo",
+                como_funciona_title: "Como usar o <span class=\"text-cyan\">NexoVentas Pro</span>",
+                step1_title: "1. Baixe e Instale",
+                step1_desc: "Receba os arquivos da loja e faça o upload no seu servidor em minutos.",
+                step2_title: "2. Carregue seus Produtos",
+                step2_desc: "Adicione seus links manualmente no painel para evitar bloqueios.",
+                step3_title: "3. Comece a Vender",
+                step3_desc: "Compartilhe sua loja, melhore seu SEO e receba comissões.",
+                placeholder_image: "[ Imagem ou Vídeo do Painel de Controle ]",
+                benefits_title: "Por que <span class=\"text-cyan\">NexoVentas Pro</span>?",
+                b1_title: "Design Premium",
+                b1_desc: "Experiência do usuário otimizada para maximizar conversões.",
+                b2_title: "Gestão Manual",
+                b2_desc: "Arquitetura anti-banimento. Controle total dos links.",
+                b3_title: "Velocidade Extrema",
+                b3_desc: "Tempos de carregamento rápidos que melhoram o SEO.",
+                test_title: "O que dizem <span class=\"text-cyan\">nossos clientes</span>",
+                price_title: "Planos e <span class=\"text-cyan\">Preços</span>",
+                p1_title: "Assinatura Mensal",
+                p1_price: "$100 BRL <span>/mês</span>",
+                p2_title: "Código Próprio",
+                p2_price: "$1000 BRL <span>único</span>",
+                btn_contratar: "Contratar",
+                footer: "&copy; 2026 NexoVentas Pro. Todos os direitos reservados.",
+                modal_title: "Preencha seus dados",
+                label_nombre: "Nome Completo *",
+                label_email: "E-mail *",
+                label_tel: "Telefone (com DDD) *",
+                label_pais: "País *",
+                btn_pagar: "Confirmar e prosseguir para o pagamento"
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+        }
+
+        // Modal Logic
+        const modal = document.getElementById('checkoutModal');
+        const form = document.getElementById('checkoutForm');
+        const successMsg = document.getElementById('successMessage');
+
+        function openModal() {
+            modal.classList.add('active');
+            form.reset();
+            successMsg.style.display = 'none';
+            form.querySelector('button[type="submit"]').style.display = 'block';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        window.onclick = function(event) {
+            if (event.target === modal) closeModal();
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const telefono = document.getElementById('telefono').value;
+            const pais = document.getElementById('pais').value;
+            const btnSubmit = form.querySelector('button[type="submit"]');
+            const lang = document.getElementById('langSelector').value;
+            
+            btnSubmit.style.display = 'none';
+            
+            let msg = `Gracias <strong>${nombre}</strong>, tus datos han sido registrados.<br>Redirigiendo a WhatsApp para completar el pago...`;
+            if(lang === 'en') msg = `Thank you <strong>${nombre}</strong>, your details have been registered.<br>Redirecting to WhatsApp to complete payment...`;
+            if(lang === 'pt') msg = `Obrigado <strong>${nombre}</strong>, seus dados foram registrados.<br>Redirecionando para o WhatsApp para concluir o pagamento...`;
+
+            successMsg.innerHTML = msg;
+            successMsg.style.display = 'block';
+
+            setTimeout(() => {
+                // Redirección a WhatsApp (número configurado en CONFIG, arriba)
+                const mensaje = `Hola, quiero comprar NexoVentas Pro.%0A%0AMis datos:%0ANombre: ${nombre}%0AEmail: ${email}%0ATeléfono: ${telefono}%0APaís: ${pais}%0A%0AEstoy listo para recibir el link de pago.`;
+
+                window.location.href = `https://wa.me/${CONFIG.WHATSAPP}?text=${mensaje}`;
+
+                closeModal();
+            }, 3500);
+        });
+
+        // ── Aplicar CONFIG a botón flotante y links de demo ──
+        document.getElementById('waFloat').href =
+            `https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent('Hola! Quiero más info sobre NexoVentas Pro.')}`;
+        document.querySelectorAll('.demo-link').forEach(a => { a.href = CONFIG.DEMO_URL; });
+    </script>
+</body>
+</html>
