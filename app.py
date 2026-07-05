@@ -112,9 +112,78 @@ def ensure_db():
             )
         ''')
 
+# ── Seed de productos demo (solo si SEED_DEMO=1 y la tabla está vacía) ────────
+SEED_PRODUCTOS = [
+    ("Auriculares Inalámbricos Xiaomi Redmi Buds 6 Play BT 5.4",
+     "El auricular más vendido de Argentina. Bluetooth 5.4, hasta 36hs de batería con el estuche y cancelación de ruido en llamadas. Ideal para música, gym y trabajo.",
+     24999, "https://http2.mlstatic.com/D_NQ_NP_2X_935289-MLA100007937509_122025-F.webp",
+     "https://www.mercadolibre.com.ar/audifonos-inalambricos-xiaomi-redmi-buds-6-play-bt-54-color-sky-blue/p/MLA55462947",
+     "Audio", 5),
+    ("Celular Samsung Galaxy A16 128GB 4GB RAM 6.7\"",
+     "El celular más elegido del país. Pantalla Super AMOLED de 6.7\", cámara de 50MP y batería para todo el día. Envío gratis y garantía oficial Samsung.",
+     309999, "https://http2.mlstatic.com/D_NQ_NP_2X_909065-MLA96870019085_102025-F.webp",
+     "https://www.mercadolibre.com.ar/celular-samsung-galaxy-a16-128-gb-4-gb-de-ram-67-gris/p/MLA44113908",
+     "Smartphones", 5),
+    ("Auriculares Bluetooth Sony WH-CH520 On-Ear",
+     "Calidad de sonido Sony con 50 horas de batería y carga rápida. Vincha liviana y cómoda para usar todo el día. Conexión multipunto: celular y compu a la vez.",
+     84999, "https://http2.mlstatic.com/D_NQ_NP_2X_941567-MLA99464084588_112025-F.webp",
+     "https://www.mercadolibre.com.ar/auriculares-bluetooth-inalambricos-sony-wh-ch520-amarillo/p/MLA47857275",
+     "Audio", 5),
+    ("Smartwatch Redmi Watch 5 Active con Alexa",
+     "Reloj inteligente con pantalla LCD de 2\", Alexa integrada, más de 140 modos deportivos y hasta 18 días de batería. Recibí llamadas y notificaciones en tu muñeca.",
+     71986, "https://http2.mlstatic.com/D_NQ_NP_2X_954866-MLA99462258698_112025-F.webp",
+     "https://www.mercadolibre.com.ar/reloj-inteligente-redmi-watch-5-active-hyperos-alexa-silver/p/MLA47354382",
+     "Accesorios", 4),
+    ("Power Bank 20.000mAh Carga Rápida",
+     "Batería portátil de 20.000mAh: carga tu celular 4 veces completas. Doble salida USB para cargar dos dispositivos a la vez. El accesorio que salva viajes y cortes de luz.",
+     23000, "https://http2.mlstatic.com/D_NQ_NP_2X_991674-MLA98648255379_112025-F.webp",
+     "https://articulo.mercadolibre.com.ar/MLA-1399965089-power-bank-cargador-portatil-20000mah-carga-rapida-mixio-_JM",
+     "Accesorios", 4),
+    ("Samsung Galaxy Fit 3 Banda Deportiva AMOLED 1.6\"",
+     "Pantalla AMOLED de 1.6\", 13 días de batería, más de 100 modos de ejercicio y monitoreo de sueño. La banda deportiva de Samsung a mitad de precio.",
+     69999, "https://http2.mlstatic.com/D_NQ_NP_2X_702327-MLA99937462709_112025-F.webp",
+     "https://www.mercadolibre.com.ar/samsung-galaxy-fit-3-sport-rosa-pantalla-tactil-amoled-16-bluetooth-microfono-13-dias-de-bateria/p/MLA33997619",
+     "Accesorios", 5),
+    ("Secador de Pelo Daewoo 2100W Frío/Calor con Difusor",
+     "El electrodoméstico más vendido de ML. 2100W de potencia profesional, aire frío y caliente, y difusor incluido para rulos. 55% de descuento.",
+     35599, "https://http2.mlstatic.com/D_NQ_NP_2X_872804-MLA99453742720_112025-F.webp",
+     "https://www.mercadolibre.com.ar/secador-pelo-daewoo-2100w-frio-calor-con-difusor-dhd7007-negro/p/MLA22138728",
+     "Hogar", 5),
+    ("Aspiradora Gadnic 2 en 1 Vertical y de Mano 600W HEPA",
+     "Aspiradora vertical que se convierte en aspiradora de mano. Filtro HEPA lavable, 15Kpa de succión y cable de 5 metros. Limpieza completa sin bolsas.",
+     73999, "https://http2.mlstatic.com/D_NQ_NP_2X_928530-MLA109897100656_042026-F.webp",
+     "https://www.mercadolibre.com.ar/aspiradora-gadnic-jtl60y-2-en-1-vertical-y-de-mano-600w-15kpa-filtro-hepa-lavable-cable-5m-deposito-1l/p/MLA45758897",
+     "Hogar", 4),
+    ("Cafetera Moulinex Dolce Gusto Piccolo XS",
+     "La cafetera de cápsulas más buscada: café, capuccino y chocolatada en 30 segundos. Compacta, ideal para cocinas chicas. 49% OFF y envío gratis.",
+     136990, "https://http2.mlstatic.com/D_NQ_NP_2X_994334-MLA100010184303_122025-F.webp",
+     "https://www.mercadolibre.com.ar/cafetera-moulinex-dolce-gusto-piccolo-xs-pv1a0558/p/MLA15705813",
+     "Cocina", 5),
+    ("Proyector Portátil 4K HY300 Android 11 WiFi Bluetooth",
+     "Cine en tu casa: proyecta hasta 130 pulgadas con Android 11 integrado (Netflix, YouTube sin nada extra). WiFi, Bluetooth y parlante incluido. El producto viral del año.",
+     75122, "https://http2.mlstatic.com/D_NQ_NP_2X_907176-MLA96142511857_102025-F.webp",
+     "https://www.mercadolibre.com.ar/proyector-portatil-4k-hy300-full-hd-wifi-hdmi-android-11-bt-50/p/MLA42238146",
+     "TV & Video", 5),
+]
+
+def seed_demo():
+    """Carga productos demo una sola vez (controlado por env SEED_DEMO=1)."""
+    if os.environ.get('SEED_DEMO') != '1':
+        return
+    existentes = db_query('SELECT COUNT(*) AS c FROM productos', fetch='one')
+    if existentes and existentes['c'] > 0:
+        return
+    for titulo, desc, precio, img, link, cat, estrellas in SEED_PRODUCTOS:
+        db_query(
+            'INSERT INTO productos (titulo, descripcion, precio, imagen_url, link_afiliado, categoria, estrellas) '
+            'VALUES (?, ?, ?, ?, ?, ?, ?)',
+            (titulo, desc, precio, img, link, cat, estrellas)
+        )
+
 # Auto-inicializar al arrancar
 with app.app_context():
     ensure_db()
+    seed_demo()
 
 
 # ── Autenticación del panel admin ─────────────────────────────────────────────
