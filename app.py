@@ -206,6 +206,28 @@ def migrate_db():
         db_query("ALTER TABLE productos ADD COLUMN imagenes TEXT DEFAULT ''")
     except Exception:
         pass  # la columna ya existe
+    try:
+        db_query("ALTER TABLE productos ADD COLUMN clicks INTEGER DEFAULT 0")
+    except Exception:
+        pass
+    db_query('''
+        CREATE TABLE IF NOT EXISTS visitas (
+            fecha TEXT PRIMARY KEY,
+            total INTEGER DEFAULT 0
+        )
+    ''')
+
+def registrar_visita():
+    """Suma una visita al contador del día (no bloquea si falla)."""
+    from datetime import date
+    try:
+        db_query(
+            "INSERT INTO visitas (fecha, total) VALUES (?, 1) "
+            "ON CONFLICT(fecha) DO UPDATE SET total = visitas.total + 1",
+            (date.today().isoformat(),)
+        )
+    except Exception:
+        pass
 
 def parsear_imagenes(productos):
     """Agrega imagenes_list a cada producto: [imagen principal + extras]."""
@@ -279,20 +301,43 @@ def ventas():
 
 @app.route('/')
 def index():
+    registrar_visita()
     productos = parsear_imagenes(normalizar_precio(
         db_query('SELECT * FROM productos ORDER BY id DESC', fetch='all')
     ))
     categorias = sorted({p['categoria'] for p in productos})
     return render_template('index.html', productos=productos, categorias=categorias)
 
+@app.route('/ir/<int:pid>')
+def ir_producto(pid):
+    """Cuenta el clic y redirige a la oferta en Mercado Libre."""
+    p = db_query('SELECT link_afiliado FROM productos WHERE id = ?', (pid,), fetch='one')
+    if not p:
+        return redirect(url_for('index'))
+    try:
+        db_query('UPDATE productos SET clicks = COALESCE(clicks, 0) + 1 WHERE id = ?', (pid,))
+    except Exception:
+        pass
+    return redirect(p['link_afiliado'])
+
 # ── Admin ─────────────────────────────────────────────────────────────────────
 @app.route('/admin')
 @login_required
 def admin():
+    from datetime import date
     productos = normalizar_precio(
         db_query('SELECT * FROM productos ORDER BY id DESC', fetch='all')
     )
-    return render_template('admin.html', productos=productos)
+    hoy = db_query('SELECT total FROM visitas WHERE fecha = ?',
+                   (date.today().isoformat(),), fetch='one')
+    tot = db_query('SELECT SUM(total) AS t FROM visitas', fetch='one')
+    stats = {
+        'visitas_hoy': (hoy or {}).get('total') or 0,
+        'visitas_total': (tot or {}).get('t') or 0,
+        'clicks_total': sum(p.get('clicks') or 0 for p in productos),
+    }
+    stats['ctr'] = round(stats['clicks_total'] * 100 / stats['visitas_total'], 1) if stats['visitas_total'] else 0
+    return render_template('admin.html', productos=productos, stats=stats)
 
 @app.route('/admin/add', methods=['POST'])
 @login_required

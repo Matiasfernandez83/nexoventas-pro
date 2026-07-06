@@ -23,6 +23,33 @@
   {% endwith %}
 
   {# ══════════════════════════════════════════
+     ESTADÍSTICAS DE TRÁFICO
+     ══════════════════════════════════════════ #}
+  {% if stats %}
+  <div class="admin-card">
+    <h2 class="admin-card-title">📈 Tráfico de tu tienda</h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px;">
+      <div style="background:rgba(61,139,255,0.08); border:1px solid rgba(61,139,255,0.25); border-radius:10px; padding:14px; text-align:center;">
+        <div style="font-size:1.7rem; font-weight:800; color:#3D8BFF;">{{ stats.visitas_hoy }}</div>
+        <div style="font-size:0.78rem; color:var(--text-3);">Visitas hoy</div>
+      </div>
+      <div style="background:rgba(61,139,255,0.08); border:1px solid rgba(61,139,255,0.25); border-radius:10px; padding:14px; text-align:center;">
+        <div style="font-size:1.7rem; font-weight:800; color:#3D8BFF;">{{ stats.visitas_total }}</div>
+        <div style="font-size:0.78rem; color:var(--text-3);">Visitas totales</div>
+      </div>
+      <div style="background:rgba(74,222,128,0.08); border:1px solid rgba(74,222,128,0.25); border-radius:10px; padding:14px; text-align:center;">
+        <div style="font-size:1.7rem; font-weight:800; color:#4ade80;">{{ stats.clicks_total }}</div>
+        <div style="font-size:0.78rem; color:var(--text-3);">Clics a Mercado Libre</div>
+      </div>
+      <div style="background:rgba(255,193,7,0.08); border:1px solid rgba(255,193,7,0.25); border-radius:10px; padding:14px; text-align:center;">
+        <div style="font-size:1.7rem; font-weight:800; color:#ffc107;">{{ stats.ctr }}%</div>
+        <div style="font-size:0.78rem; color:var(--text-3);">Conversión visita→clic</div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {# ══════════════════════════════════════════
      FORMULARIO DE CARGA
      ══════════════════════════════════════════ #}
   <div class="admin-card">
@@ -178,6 +205,7 @@
             <th>Precio</th>
             <th>Link Afiliado</th>
             <th>Estrellas</th>
+            <th>Clics</th>
             <th>Acción</th>
           </tr>
         </thead>
@@ -201,6 +229,9 @@
               <td style="color:var(--star);">
                 {{ '★' * p.estrellas }}{{ '☆' * (5 - p.estrellas) }}
               </td>
+              <td style="text-align:center; font-weight:700; color:#4ade80;">
+                {{ p.clicks or 0 }}
+              </td>
               <td>
                 <button type="button" class="btn-delete"
                         data-pid="{{ p.id }}"
@@ -212,7 +243,7 @@
             {% endfor %}
           {% else %}
             <tr>
-              <td colspan="7" class="table-empty">
+              <td colspan="8" class="table-empty">
                 <div class="empty-icon">📭</div>
                 <p>No hay productos cargados aún. ¡Usá el formulario de arriba!</p>
               </td>

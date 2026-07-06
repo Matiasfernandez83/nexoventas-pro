@@ -43,7 +43,7 @@
 
             <div class="slide-price-row">
               <span class="slide-price">{{ p.precio|precio_fmt }}</span>
-              <a href="{{ p.link_afiliado }}" class="btn-cta" target="_blank" rel="noopener">
+              <a href="{{ url_for('ir_producto', pid=p.id) }}" class="btn-cta" target="_blank" rel="noopener">
                 Ver Oferta →
               </a>
             </div>
@@ -150,7 +150,7 @@
             </div>
 
             {# CTA ancho #}
-            <a href="{{ p.link_afiliado }}" class="card-cta" target="_blank" rel="noopener">
+            <a href="{{ url_for('ir_producto', pid=p.id) }}" class="card-cta" target="_blank" rel="noopener">
               Ver Oferta en Mercado Libre
             </a>
           </div>
