@@ -664,3 +664,43 @@ img { max-width: 100%; display: block; }
   .section-title { font-size: 1.25rem; }
   .admin-card { padding: 20px; }
 }
+
+/* ══ Mini-carrusel de fotos en tarjetas de producto ══ */
+.card-img-wrap { position: relative; }
+.card-img-wrap .card-img {
+  position: absolute; inset: 0;
+  opacity: 0; transition: opacity 0.35s ease, transform 0.5s ease;
+  pointer-events: none;
+}
+.card-img-wrap .card-img.active { opacity: 1; pointer-events: auto; }
+
+.cimg-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  z-index: 5; width: 30px; height: 30px; border-radius: 50%;
+  border: none; cursor: pointer;
+  background: rgba(10, 10, 10, 0.55); color: #fff;
+  font-size: 0.8rem; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.25s, background 0.25s;
+}
+.cimg-btn.prev { left: 8px; }
+.cimg-btn.next { right: 8px; }
+.card-img-wrap:hover .cimg-btn { opacity: 1; }
+.cimg-btn:hover { background: rgba(61, 139, 255, 0.9); }
+
+.cimg-dots {
+  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  z-index: 5; display: flex; gap: 5px;
+}
+.cimg-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  cursor: pointer; transition: background 0.25s, transform 0.25s;
+}
+.cimg-dot.active { background: #3D8BFF; transform: scale(1.25); }
+
+/* En celular las flechas siempre visibles (no hay hover) */
+@media (hover: none) {
+  .cimg-btn { opacity: 0.85; }
+}

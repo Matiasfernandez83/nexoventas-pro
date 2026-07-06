@@ -5,6 +5,7 @@ import sqlite3
 import os
 import time
 import hmac
+import json
 from functools import wraps
 from werkzeug.utils import secure_filename
 
@@ -118,71 +119,110 @@ SEED_PRODUCTOS = [
      "El auricular más vendido de Argentina. Bluetooth 5.4, hasta 36hs de batería con el estuche y cancelación de ruido en llamadas. Ideal para música, gym y trabajo.",
      24999, "https://http2.mlstatic.com/D_NQ_NP_2X_935289-MLA100007937509_122025-F.webp",
      "https://www.mercadolibre.com.ar/audifonos-inalambricos-xiaomi-redmi-buds-6-play-bt-54-color-sky-blue/p/MLA55462947",
-     "Audio", 5),
+     "Audio", 5,
+      ["https://http2.mlstatic.com/D_NQ_NP_2X_782183-MLA95705710992_102025-F.webp", "https://http2.mlstatic.com/D_NQ_NP_2X_693078-MLA98841781353_112025-F.webp", "https://http2.mlstatic.com/D_NQ_NP_2X_677877-MLA98876241593_112025-F.webp"]),
     ("Celular Samsung Galaxy A16 128GB 4GB RAM 6.7\"",
      "El celular más elegido del país. Pantalla Super AMOLED de 6.7\", cámara de 50MP y batería para todo el día. Envío gratis y garantía oficial Samsung.",
      309999, "https://http2.mlstatic.com/D_NQ_NP_2X_909065-MLA96870019085_102025-F.webp",
      "https://www.mercadolibre.com.ar/celular-samsung-galaxy-a16-128-gb-4-gb-de-ram-67-gris/p/MLA44113908",
-     "Smartphones", 5),
+     "Smartphones", 5,
+      ["https://http2.mlstatic.com/D_NQ_NP_2X_911302-MLA99950138601_112025-F.webp"]),
     ("Auriculares Bluetooth Sony WH-CH520 On-Ear",
      "Calidad de sonido Sony con 50 horas de batería y carga rápida. Vincha liviana y cómoda para usar todo el día. Conexión multipunto: celular y compu a la vez.",
      84999, "https://http2.mlstatic.com/D_NQ_NP_2X_941567-MLA99464084588_112025-F.webp",
      "https://www.mercadolibre.com.ar/auriculares-bluetooth-inalambricos-sony-wh-ch520-amarillo/p/MLA47857275",
-     "Audio", 5),
+     "Audio", 5,
+      ["https://http2.mlstatic.com/D_NQ_NP_2X_829441-MLA99993059381_112025-F.webp"]),
     ("Smartwatch Redmi Watch 5 Active con Alexa",
      "Reloj inteligente con pantalla LCD de 2\", Alexa integrada, más de 140 modos deportivos y hasta 18 días de batería. Recibí llamadas y notificaciones en tu muñeca.",
      71986, "https://http2.mlstatic.com/D_NQ_NP_2X_954866-MLA99462258698_112025-F.webp",
      "https://www.mercadolibre.com.ar/reloj-inteligente-redmi-watch-5-active-hyperos-alexa-silver/p/MLA47354382",
-     "Accesorios", 4),
+     "Accesorios", 4,
+      []),
     ("Power Bank 20.000mAh Carga Rápida",
      "Batería portátil de 20.000mAh: carga tu celular 4 veces completas. Doble salida USB para cargar dos dispositivos a la vez. El accesorio que salva viajes y cortes de luz.",
      23000, "https://http2.mlstatic.com/D_NQ_NP_2X_991674-MLA98648255379_112025-F.webp",
      "https://articulo.mercadolibre.com.ar/MLA-1399965089-power-bank-cargador-portatil-20000mah-carga-rapida-mixio-_JM",
-     "Accesorios", 4),
+     "Accesorios", 4,
+      []),
     ("Samsung Galaxy Fit 3 Banda Deportiva AMOLED 1.6\"",
      "Pantalla AMOLED de 1.6\", 13 días de batería, más de 100 modos de ejercicio y monitoreo de sueño. La banda deportiva de Samsung a mitad de precio.",
      69999, "https://http2.mlstatic.com/D_NQ_NP_2X_702327-MLA99937462709_112025-F.webp",
      "https://www.mercadolibre.com.ar/samsung-galaxy-fit-3-sport-rosa-pantalla-tactil-amoled-16-bluetooth-microfono-13-dias-de-bateria/p/MLA33997619",
-     "Accesorios", 5),
+     "Accesorios", 5,
+      ["https://http2.mlstatic.com/D_NQ_NP_2X_617547-MLA76395100597_052024-F.webp", "https://http2.mlstatic.com/D_NQ_NP_2X_624676-MLA75207394706_032024-F.webp", "https://http2.mlstatic.com/D_NQ_NP_2X_643676-MLA75438237975_032024-F.webp"]),
     ("Secador de Pelo Daewoo 2100W Frío/Calor con Difusor",
      "El electrodoméstico más vendido de ML. 2100W de potencia profesional, aire frío y caliente, y difusor incluido para rulos. 55% de descuento.",
      35599, "https://http2.mlstatic.com/D_NQ_NP_2X_872804-MLA99453742720_112025-F.webp",
      "https://www.mercadolibre.com.ar/secador-pelo-daewoo-2100w-frio-calor-con-difusor-dhd7007-negro/p/MLA22138728",
-     "Hogar", 5),
+     "Hogar", 5,
+      []),
     ("Aspiradora Gadnic 2 en 1 Vertical y de Mano 600W HEPA",
      "Aspiradora vertical que se convierte en aspiradora de mano. Filtro HEPA lavable, 15Kpa de succión y cable de 5 metros. Limpieza completa sin bolsas.",
      73999, "https://http2.mlstatic.com/D_NQ_NP_2X_928530-MLA109897100656_042026-F.webp",
      "https://www.mercadolibre.com.ar/aspiradora-gadnic-jtl60y-2-en-1-vertical-y-de-mano-600w-15kpa-filtro-hepa-lavable-cable-5m-deposito-1l/p/MLA45758897",
-     "Hogar", 4),
+     "Hogar", 4,
+      []),
     ("Cafetera Moulinex Dolce Gusto Piccolo XS",
      "La cafetera de cápsulas más buscada: café, capuccino y chocolatada en 30 segundos. Compacta, ideal para cocinas chicas. 49% OFF y envío gratis.",
      136990, "https://http2.mlstatic.com/D_NQ_NP_2X_994334-MLA100010184303_122025-F.webp",
      "https://www.mercadolibre.com.ar/cafetera-moulinex-dolce-gusto-piccolo-xs-pv1a0558/p/MLA15705813",
-     "Cocina", 5),
+     "Cocina", 5,
+      []),
     ("Proyector Portátil 4K HY300 Android 11 WiFi Bluetooth",
      "Cine en tu casa: proyecta hasta 130 pulgadas con Android 11 integrado (Netflix, YouTube sin nada extra). WiFi, Bluetooth y parlante incluido. El producto viral del año.",
      75122, "https://http2.mlstatic.com/D_NQ_NP_2X_907176-MLA96142511857_102025-F.webp",
      "https://www.mercadolibre.com.ar/proyector-portatil-4k-hy300-full-hd-wifi-hdmi-android-11-bt-50/p/MLA42238146",
-     "TV & Video", 5),
+     "TV & Video", 5,
+      ["https://http2.mlstatic.com/D_NQ_NP_2X_706831-MLA80171884101_102024-F.webp", "https://http2.mlstatic.com/D_NQ_NP_2X_940421-MLA80171884099_102024-F.webp"]),
 ]
 
 def seed_demo():
-    """Carga productos demo una sola vez (controlado por env SEED_DEMO=1)."""
+    """Carga productos demo una sola vez (controlado por env SEED_DEMO=1).
+    Si los productos ya existen, solo completa las galerías de fotos vacías."""
     if os.environ.get('SEED_DEMO') != '1':
         return
     existentes = db_query('SELECT COUNT(*) AS c FROM productos', fetch='one')
     if existentes and existentes['c'] > 0:
+        for titulo, _d, _p, _i, _l, _c, _e, extras in SEED_PRODUCTOS:
+            if extras:
+                db_query(
+                    "UPDATE productos SET imagenes=? WHERE titulo=? AND (imagenes IS NULL OR imagenes='')",
+                    (json.dumps(extras), titulo)
+                )
         return
-    for titulo, desc, precio, img, link, cat, estrellas in SEED_PRODUCTOS:
+    for titulo, desc, precio, img, link, cat, estrellas, extras in SEED_PRODUCTOS:
         db_query(
-            'INSERT INTO productos (titulo, descripcion, precio, imagen_url, link_afiliado, categoria, estrellas) '
-            'VALUES (?, ?, ?, ?, ?, ?, ?)',
-            (titulo, desc, precio, img, link, cat, estrellas)
+            'INSERT INTO productos (titulo, descripcion, precio, imagen_url, link_afiliado, categoria, estrellas, imagenes) '
+            'VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            (titulo, desc, precio, img, link, cat, estrellas, json.dumps(extras) if extras else '')
         )
+
+def migrate_db():
+    """Migraciones suaves: agrega columnas nuevas sin tocar datos existentes."""
+    try:
+        db_query("ALTER TABLE productos ADD COLUMN imagenes TEXT DEFAULT ''")
+    except Exception:
+        pass  # la columna ya existe
+
+def parsear_imagenes(productos):
+    """Agrega imagenes_list a cada producto: [imagen principal + extras]."""
+    for d in productos:
+        extras = []
+        raw = d.get('imagenes') or ''
+        if raw:
+            try:
+                extras = [u for u in json.loads(raw) if isinstance(u, str) and u.strip()]
+            except (ValueError, TypeError):
+                extras = [u.strip() for u in raw.splitlines() if u.strip()]
+        principal = d.get('imagen_url') or ''
+        d['imagenes_list'] = [principal] + [u for u in extras if u != principal] if principal else extras
+    return productos
 
 # Auto-inicializar al arrancar
 with app.app_context():
     ensure_db()
+    migrate_db()
     seed_demo()
 
 
@@ -237,9 +277,9 @@ def ventas():
 
 @app.route('/')
 def index():
-    productos = normalizar_precio(
+    productos = parsear_imagenes(normalizar_precio(
         db_query('SELECT * FROM productos ORDER BY id DESC', fetch='all')
-    )
+    ))
     categorias = sorted({p['categoria'] for p in productos})
     return render_template('index.html', productos=productos, categorias=categorias)
 
@@ -292,11 +332,16 @@ def admin_add():
     if not imagen_url:
         imagen_url = 'https://placehold.co/400x400/111/3D8BFF?text=Producto'
 
+    # Fotos adicionales (una URL por línea) para el carrusel de la tarjeta
+    extras_raw = (request.form.get('imagenes_extra') or '').strip()
+    extras = [u.strip() for u in extras_raw.splitlines() if u.strip().startswith('http')]
+    imagenes_json = json.dumps(extras) if extras else ''
+
     try:
         db_query(
-            'INSERT INTO productos (titulo, descripcion, precio, imagen_url, link_afiliado, categoria, estrellas) '
-            'VALUES (?, ?, ?, ?, ?, ?, ?)',
-            (titulo, descripcion, precio, imagen_url, link, categoria, estrellas)
+            'INSERT INTO productos (titulo, descripcion, precio, imagen_url, link_afiliado, categoria, estrellas, imagenes) '
+            'VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            (titulo, descripcion, precio, imagen_url, link, categoria, estrellas, imagenes_json)
         )
         flash(f'✓ "{titulo}" agregado con éxito.', 'success')
     except Exception as e:

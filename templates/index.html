@@ -111,7 +111,19 @@
         {% for p in productos %}
         <article class="product-card" data-cat="{{ p.categoria|lower|replace(' ', '-') }}">
           <div class="card-img-wrap">
-            <img src="{{ p.imagen_url }}" alt="{{ p.titulo }}" loading="lazy">
+            {% for img in p.imagenes_list %}
+            <img src="{{ img }}" alt="{{ p.titulo }}" loading="lazy"
+                 class="card-img {% if loop.first %}active{% endif %}">
+            {% endfor %}
+            {% if p.imagenes_list|length > 1 %}
+            <button type="button" class="cimg-btn prev" aria-label="Foto anterior">&#10094;</button>
+            <button type="button" class="cimg-btn next" aria-label="Foto siguiente">&#10095;</button>
+            <div class="cimg-dots">
+              {% for img in p.imagenes_list %}
+              <span class="cimg-dot {% if loop.first %}active{% endif %}"></span>
+              {% endfor %}
+            </div>
+            {% endif %}
           </div>
 
           <div class="card-body">
@@ -220,6 +232,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* Transición suave en tarjetas */
   cards.forEach(c => { c.style.transition = 'opacity 0.25s, transform 0.25s'; });
+
+  /* ── MINI-CARRUSEL DE FOTOS EN CADA TARJETA ── */
+  document.querySelectorAll('.card-img-wrap').forEach(wrap => {
+    const imgs = wrap.querySelectorAll('.card-img');
+    if (imgs.length < 2) return;
+    const dots = wrap.querySelectorAll('.cimg-dot');
+    let idx = 0;
+
+    function show(n) {
+      idx = (n + imgs.length) % imgs.length;
+      imgs.forEach((im, i) => im.classList.toggle('active', i === idx));
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }
+
+    wrap.querySelector('.cimg-btn.prev').addEventListener('click', e => { e.preventDefault(); show(idx - 1); });
+    wrap.querySelector('.cimg-btn.next').addEventListener('click', e => { e.preventDefault(); show(idx + 1); });
+    dots.forEach((d, i) => d.addEventListener('click', () => show(i)));
+  });
 });
 </script>
 {% endblock %}
